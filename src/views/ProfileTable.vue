@@ -2,12 +2,12 @@
 import type { LeagueProfile } from '@/domain/models/blitz/LeagueProfile'
 
 defineProps<{
-  leagueProfile: LeagueProfile
+  leagueProfiles: LeagueProfile[]
 }>()
 </script>
 
 <template>
-  <Card class="shadow-xl shadow-white/5">
+  <Card class="shadow-xl shadow-orange-400/5">
     <CardHeader class="px-7">
       <CardTitle>Accounts</CardTitle>
       <CardDescription>
@@ -33,30 +33,33 @@ defineProps<{
             </TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
-          <TableRow class="bg-accent">
-            <TableCell>
-              <div class="font-medium">
-                {{ leagueProfile.summonerName }}
-              </div>
-            </TableCell>
-            <TableCell v-if="leagueProfile.ranks" class="hidden sm:table-cell">
-              {{ leagueProfile.ranks[0].tier }}
-
-              {{ leagueProfile.ranks[0].leaguePoints }} LP
-            </TableCell>
-            <TableCell class="hidden sm:table-cell">
-              <Badge class="text-xs" variant="secondary">
-                {{ leagueProfile.riotAccount.gameName }}
-              </Badge>
-            </TableCell>
-            <TableCell class="hidden md:table-cell">
-              {{ leagueProfile.ranks[0].wins }}-{{ leagueProfile.ranks[0].losses }}
-            </TableCell>
-            <TableCell class="text-right" />
-          </TableRow>
+        <TableBody v-show="leagueProfiles && leagueProfiles.length > 0">
+          <TransitionGroup name="summoners">
+            <TableRow v-for="leagueProfile in leagueProfiles" :key="leagueProfile.id" class="bg-accent">
+              <TableCell>
+                <div class="font-medium">
+                  {{ leagueProfile.summonerName }}
+                </div>
+              </TableCell>
+              <TableCell v-if="leagueProfile.ranks" class="hidden sm:table-cell">
+                {{ leagueProfile.ranks[0].tier }} {{ leagueProfile.ranks[0].leaguePoints }} LP
+              </TableCell>
+              <TableCell class="hidden sm:table-cell">
+                <Badge class="text-xs" variant="secondary">
+                  {{ leagueProfile.riotAccount.gameName }}
+                </Badge>
+              </TableCell>
+              <TableCell class="hidden md:table-cell">
+                {{ leagueProfile.ranks[0].wins }}-{{ leagueProfile.ranks[0].losses }}
+              </TableCell>
+              <TableCell class="text-right" />
+            </TableRow>
+          </TransitionGroup>
         </TableBody>
       </Table>
     </CardContent>
   </Card>
 </template>
+
+<styles scoped>
+</styles>

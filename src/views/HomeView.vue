@@ -21,16 +21,12 @@ async function getProfile() {
     if (!response.data) {
       return console.log('Response data not found')
     }
-    if (response.data.errors.length > 0) {
+    if (response.data.errors) {
       response.data.errors.forEach((error) => {
         if (error.code === 'not_found') {
           errorMessage.value = error.message
         }
       })
-    }
-    for (const error in response.data.errors) {
-      if (error)
-        return console.log(error)
     }
     if (!profiles.value.includes(response.data.data.leagueProfile)) {
       profiles.value.push(response.data.data.leagueProfile)
@@ -58,10 +54,15 @@ async function handleClick() {
     <HeroTitle />
 
     <div class="flex flex-col items-center gap-4 justify-center w-full">
-      <div class="flex justify-center gap-4">
-        <div class="relative mb-6 flex flex-col gap-1.5 items-end">
+      <div class="px-24 bg-gradient-to-r from-background via-popover-foreground/10  mb-12  to-background pt-0.5 w-full">
+        <!-- <h2 class="text-3xl font-bold mb-4"> -->
+        <!--   Summoners -->
+        <!-- </h2> -->
+      </div>
+
+      <div class="flex items-center justify-center gap-4">
+        <div class="relative mb-6 flex flex-col justify-center gap-1.5 items-center">
           <SearchSummonerInput v-model="summonerName" />
-          <span class="absolute -bottom-6 left-1 min-w-max  text-sm font-medium text-red-400">{{ errorMessage }}</span>
         </div>
         <Select>
           <SelectTrigger class="w-[180px]">
@@ -76,14 +77,15 @@ async function handleClick() {
             </SelectGroup>
           </SelectContent>
         </Select>
+        <Button size="rounded" @click="handleClick">
+          <PlusCircledIcon class="mr-3" />
+          Add Summoner
+        </Button>
       </div>
-      <Button size="lg" @click="handleClick">
-        <PlusCircledIcon class="mr-3" />
-        Add Summoner
-      </Button>
+
+      <main class="flex mt-12 justify-center ">
+        <ProfileTable :profiles="profiles" />
+      </main>
     </div>
-    <main class="mt-12 flex justify-center ">
-      <ProfileTable v-for="profile in profiles" :key="profile.summonerId" :league-profile="profile" />
-    </main>
   </div>
 </template>

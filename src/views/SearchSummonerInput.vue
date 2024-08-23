@@ -1,10 +1,8 @@
 <script setup lang="ts">
-const model = defineModel<string>()
+const model = defineModel<string>({ required: true })
 </script>
+
 <template>
-  <div class="space-y-2">
-    <!-- <Label class="text-muted-foreground font-medium text-sm">Summoner Name</Label> -->
-    <Input placeholder="Game Name + Tag Line" class="max-w-[180px]" v-model="model">
-    </Input>
-  </div>
+  <!-- <Label class="text-muted-foreground font-medium text-sm">Summoner Name</Label> -->
+  <Input v-model="model" placeholder="Game Name + Tag Line" class="max-w-[180px]" />
 </template>

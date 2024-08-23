@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-6xl  pt-36 text-center">
+  <h1 class="text-6xl  pt-40 text-center">
     Welcome to
   </h1>
   <h1 class=" w-full mb-4 pb-4  title font-bold text-6xl text-center ">
