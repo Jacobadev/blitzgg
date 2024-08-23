@@ -1,86 +1,98 @@
 <script setup lang="ts">
-import type { LeagueProfile, SummonerProfileResponse } from '@/domain/models/blitz/LeagueProfile';
-import { ref } from 'vue';
-import { onMounted } from 'vue';
-import { BlitzRepository } from '@/domain/usecases/SummonerRepository';
+import { PlusCircledIcon } from '@radix-icons/vue'
+import { onMounted, ref } from 'vue'
+import ProfileTable from './ProfileTable.vue'
+import DarkModeToggle from './DarkModeToggle.vue'
+import SearchSummonerInput from './SearchSummonerInput.vue'
+import { BlitzRepository } from '@/domain/usecases/SummonerRepository'
+import type { LeagueProfile, SummonerProfileResponse } from '@/domain/models/blitz/LeagueProfile'
+
 const repo = new BlitzRepository()
-const profile = ref<LeagueProfile>({} as LeagueProfile)
+const profiles = ref<LeagueProfile[]>([])
 const isLoading = ref(true)
-onMounted(async () => {
-  const response = await repo.getLeagueProfile('AYordleWithADog#NA1', 'NA')
-  profile.value = response.data.data.leagueProfile
-  isLoading.value = false
-})
+const regions = ['NA', 'BR']
+const summonerRegion = ref<string>('BR')
+const summonerName = ref('')
+
+async function addProfile() {
+  const response = await repo.getLeagueProfile(summonerName.value, summonerRegion.value)
+  if (!response.data) {
+    return console.log('error')
+  }
+  for (const error in response.data.errors) {
+    if (error)
+      console.log(error)
+  }
+  if (response.data.errors.length < 0)
+    profiles.value.push(response.data.data.leagueProfile)
+}
+
+isLoading.value = false
 </script>
 
 <template>
-  <main v-if="!isLoading" class="flex justify-center ">
-    <table class="min-w-min bg-white shadow-lg rounded-lg">
-      <thead>
-        <tr class="bg-gray-800 text-white text-left">
-          <th class="py-3 px-6">Campo</th>
-          <th class="py-3 px-6">Valor</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="border-b border-gray-200">
-          <td class="py-3 px-6">Account ID</td>
-          <td class="py-3 px-6">{{ profile.accountId }}</td>
-        </tr>
-        <tr class="bg-gray-50 border-b border-gray-200">
-          <td class="py-3 px-6">Summoner ID</td>
-          <td class="py-3 px-6">{{ profile.summonerId }}</td>
-        </tr>
-        <tr class="border-b border-gray-200">
-          <td class="py-3 px-6">Puuid</td>
-          <td class="py-3 px-6">{{ profile.puuid }}</td>
-        </tr>
-        <tr class="bg-gray-50 border-b border-gray-200">
-          <td class="py-3 px-6">Summoner Level</td>
-          <td class="py-3 px-6">{{ profile.summonerLevel }}</td>
-        </tr>
-        <tr class="border-b border-gray-200">
-          <td class="py-3 px-6">Profile Icon ID</td>
-          <td class="py-3 px-6">{{ profile.profileIconId }}</td>
-        </tr>
-        <tr class="bg-gray-50 border-b border-gray-200">
-          <td class="py-3 px-6">Summoner Name</td>
-          <td class="py-3 px-6">{{ profile.summonerName }}</td>
-        </tr>
-        <tr class="border-b border-gray-200">
-          <td class="py-3 px-6">Updated At</td>
-          <td class="py-3 px-6">{{ profile.updatedAt }}</td>
-        </tr>
-        <tr class="bg-gray-50 border-b border-gray-200">
-          <td class="py-3 px-6">Latest Ranks</td>
-          <td class="py-3 px-6">
-            <ul>
-              <li v-for="(rank, index) in profile.latestRanks" :key="index">
-                {{ rank.tier }} {{ rank.rank }} {{ rank.leaguePoints }} LP wins: <span class="text-green-500">{{
-                  rank.wins
-                }}</span> losses:<span class="text-red-500">{{ rank.losses }}</span>
-              </li>
-            </ul>
-          </td>
-        </tr>
-        <tr class="  border-b border-gray-200">
-          <td class="flex h-full py-3 px-6">Ranks</td>
-          <td class=" py-3 px-6">
-            <ul class="max-h-[200px] overflow-y-auto grid grid-cols-[repeat(auto-fill,minmax(90px,1fr))]">
-              <li v-for="(rank, index) in profile.ranks" :key="index">
+  <header class="fixed w-screen   top-0 px-24 ">
+    <div class="flex justify-between gap-4 bg-foreground/10 mt-4 rounded-lg px-8 py-3 w-full">
+      <DarkModeToggle />
+      <div class="space-x-4">
+        <Button variant="secondary" size="sm">
+          Login
+        </Button>
+        <Button variant="default" size="sm">
+          Sign Up
+        </Button>
+      </div>
+    </div>
+  </header>
+  <h1 class="text-6xl  pt-36 text-center">
+    Welcome to
+  </h1>
+  <h1 class=" w-full mb-4 pb-4  title font-bold text-6xl text-center ">
+    Blitzgg scrapper
+  </h1>
+  <p class="text-center pb-6">
+    The main solution to <span class="font-medium line-through text-foreground/70">steal</span><span
+      class="font-medium text-blue-500 ">
+      borrow
+    </span> <br>
+    data from people who
+    have much to share.
+  </p>
 
-                {{ index }}
-                {{ rank.tier }} {{ rank.rank }}
-              </li>
-            </ul>
-          </td>
-        </tr>
-        <tr class="bg-gray-50">
-          <td class="py-3 px-6">Riot Account</td>
-          <td class="py-3 px-6">{{ profile.riotAccount.gameName }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="flex flex-col items-center gap-4 justify-center w-full">
+    <div class="flex justify-center gap-4">
+      <SearchSummonerInput v-model="summonerName" />
+      {{ profiles }}
+      <Select>
+        <SelectTrigger class="w-[180px]">
+          <SelectValue placeholder="Select a region" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Regions</SelectLabel>
+            <SelectItem v-for="region in regions" :key="region" :value="region">
+              {{ region }}
+            </SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </div>
+    <Button size="lg" @click="addProfile">
+      <PlusCircledIcon class="mr-2" />
+      Add profile
+    </Button>
+  </div>
+  <main v-if="!isLoading && profiles.length > 0" class="mt-12 flex justify-center ">
+    <ProfileTable v-for="profile in profiles" :key="profile.summonerId" :league-profile="profile" />
   </main>
-
 </template>
+
+<style scoped>
+.title {
+  background: #77CFFF;
+  background: linear-gradient(to right, #77CF93 6%, #1DFF28 15%, #FF6A25 62%, #0F0674 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+}
+</style>

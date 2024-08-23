@@ -1,30 +1,32 @@
 {
-    "extends": "@tsconfig/node20/tsconfig.json",
-    "include": [
-        "vite.config.*",
-        "vitest.config.*",
-        "cypress.config.*",
-        "nightwatch.conf.*",
-        "playwright.config.*"
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "include": [
+    "vite.config.*",
+    "vitest.config.*",
+    "cypress.config.*",
+    "nightwatch.conf.*",
+    "playwright.config.*"
+  ],
+  "compilerOptions": {
+    "strict": true,
+    "composite": true,
+    "noEmit": true,
+    "target": "esnext",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "module": "ESNext",
+    "types": [
+      "node"
     ],
-    "compilerOptions": {
-        "strict": true,
-        "composite": true,
-        "noEmit": true,
-        "target": "esnext",
-        "moduleResolution": "node",
-
-        "strict": true,
-        "jsx": "preserve",
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true,
-        "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-
-        "module": "ESNext",
-        "moduleResolution": "Bundler",
-        "types": ["node"],
-        "plugins": [{ "name": "@vue/typescript-plugin" }]
-    }
+    "plugins": [
+      {
+        "name": "@vue/typescript-plugin"
+      }
+    ]
+  }
 }
