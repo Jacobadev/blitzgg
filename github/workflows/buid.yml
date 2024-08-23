@@ -1,0 +1,28 @@
+name: Blitzgg Scrapper
+
+on:
+  push:
+    branches:
+      - main # Deploy only on push to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+
+      - run: npm install
+
+      - run: npm run build # Build the application using Vite
+
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main' # Only deploy on the main branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist # Directory where Vite outputs the build files
