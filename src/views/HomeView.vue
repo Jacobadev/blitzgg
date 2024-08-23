@@ -25,6 +25,7 @@ async function getProfile() {
       response.data.errors.forEach((error) => {
         if (error.code === 'not_found') {
           errorMessage.value = error.message
+          return console.log(error.message)
         }
       })
     }
@@ -52,7 +53,7 @@ async function handleClick() {
   <div class="mb-24 max-w-[1680px] mx-auto">
     <HeaderIndex />
     <HeroTitle />
-
+    {{ summonerName }}
     <div class="flex flex-col items-center gap-4 justify-center w-full">
       <div class="px-24 bg-gradient-to-r from-background via-popover-foreground/10  mb-12  to-background pt-0.5 w-full">
         <!-- <h2 class="text-3xl font-bold mb-4"> -->
@@ -65,9 +66,9 @@ async function handleClick() {
           <SearchSummonerInput v-model="summonerName" />
           <span class="absolute -bottom-6 left-1 min-w-max text-sm font-medium text-red-400 ">{{ errorMessage }}</span>
         </div>
-        <Select>
+        <Select :model-value="summonerRegion">
           <SelectTrigger class="w-[180px]">
-            <SelectValue placeholder="Select a region" />
+            <SelectValue default-value="NA" placeholder="Select a region" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>

@@ -28,9 +28,6 @@ defineProps<{
             <TableHead class="hidden md:table-cell">
               Wins/Losses
             </TableHead>
-            <TableHead class="text-right">
-              Amount
-            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody v-show="leagueProfiles && leagueProfiles.length > 0">
@@ -52,8 +49,12 @@ defineProps<{
                   {{ leagueProfile.riotAccount.gameName }}
                 </Badge>
               </TableCell>
-              <TableCell class="hidden md:table-cell">
+              <TableCell v-if="leagueProfile.ranks.length > 0" class="hidden md:table-cell">
                 {{ leagueProfile.ranks[0].wins }}-{{ leagueProfile.ranks[0].losses }}
+              </TableCell>
+
+              <TableCell v-else class="hidden md:table-cell">
+                No games
               </TableCell>
               <TableCell class="text-right" />
             </TableRow>

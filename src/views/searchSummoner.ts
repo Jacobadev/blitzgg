@@ -1,6 +1,8 @@
 import axios from 'axios';
+import type { GameProfiles2, Summoner } from './SummonerSearchType';
+import type { SummonerProfileResponse } from '@/domain/models';
 
-export async function fetchSummoners(searchQuery: string) {
+export async function fetchSummoners(searchQuery: string): Promise<Summoner> {
   const query = `
     query($boostGameScore: Boolean, $boostShardScore: [String!], $game: SupportedGame!, $name: String!, $page: Int, $perPage: Int, $prefetchPages: Int, $shards: [String!]) {
       gameProfiles2(boostGameScore: $boostGameScore, boostShardScore: $boostShardScore, game: $game, name: $name, page: $page, perPage: $perPage, prefetchPages: $prefetchPages, shards: $shards) {
@@ -27,6 +29,9 @@ export async function fetchSummoners(searchQuery: string) {
     }
   `;
 
+  // Define a valid shard value for the game
+  const shards = ['br1', 'na1']; // Example valid shards for LEAGUE
+
   const variables = {
     boostGameScore: false,
     boostShardScore: [],
@@ -35,11 +40,11 @@ export async function fetchSummoners(searchQuery: string) {
     page: 1,
     perPage: 50,
     prefetchPages: 1,
-    shards: [],
+    shards: shards, // Pass the valid shards here
   };
 
   try {
-    const response = await axios.post('https://search.iesdev.com/graphql', {
+    const response = await axios.post<Summoner>('https://search.iesdev.com/graphql', {
       query,
       variables,
     }, {
@@ -48,11 +53,7 @@ export async function fetchSummoners(searchQuery: string) {
       },
     });
 
-    const result = response.data;
-    return result.data.gameProfiles2.hits.map((hit: any) => ({
-      value: hit.id,
-      label: hit.name,
-    }));
+    return response.data;
   } catch (error) {
     console.error('Error fetching summoners:', error);
     throw error; // Re-throw the error for the caller to handle it
