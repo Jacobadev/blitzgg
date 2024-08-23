@@ -5,9 +5,6 @@ import tailwind from 'eslint-plugin-tailwindcss'
 export default antfu({
   ...tailwind.configs['flat/recommended'],
   ...vue.configs['flat/strongly-recommended'],
-  parserOptions: {
-    project: ['./tsconfig.json', './tsconfig.app.json', './tsconfig.node.json', './tsconfig.vitest.json'],
-  },
   rules: {
     'style/indent': 'off',
     'style/indent-binary-ops': 'off',
@@ -24,7 +21,6 @@ export default antfu({
       'tsconfig.app.json',
       'tsconfig.node.json',
       'tsconfig.vitest.json',
-      'cypress/e2e/tsconfig.json',
     ],
   },
   ignores: [
@@ -46,9 +42,6 @@ export default antfu({
     cache: true,
   },
 
-  test: {
-    cypress: true,
-  },
   vue: {
     sfcBlocks: {
       defaultLanguage: {

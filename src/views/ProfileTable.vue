@@ -41,8 +41,11 @@ defineProps<{
                   {{ leagueProfile.summonerName }}
                 </div>
               </TableCell>
-              <TableCell v-if="leagueProfile.ranks" class="hidden sm:table-cell">
+              <TableCell v-if="leagueProfile.ranks.length > 0" class="hidden sm:table-cell">
                 {{ leagueProfile.ranks[0].tier }} {{ leagueProfile.ranks[0].leaguePoints }} LP
+              </TableCell>
+              <TableCell v-else class="hidden sm:table-cell">
+                Unranked
               </TableCell>
               <TableCell class="hidden sm:table-cell">
                 <Badge class="text-xs" variant="secondary">

@@ -49,7 +49,7 @@ async function handleClick() {
 </script>
 
 <template>
-  <div class="max-w-[1680px] mx-auto">
+  <div class="mb-24 max-w-[1680px] mx-auto">
     <HeaderIndex />
     <HeroTitle />
 
@@ -61,8 +61,9 @@ async function handleClick() {
       </div>
 
       <div class="flex items-center justify-center gap-4">
-        <div class="relative mb-6 flex flex-col justify-center gap-1.5 items-center">
+        <div class="relative">
           <SearchSummonerInput v-model="summonerName" />
+          <span class="absolute -bottom-6 left-1 min-w-max text-sm font-medium text-red-400 ">{{ errorMessage }}</span>
         </div>
         <Select>
           <SelectTrigger class="w-[180px]">
@@ -84,7 +85,7 @@ async function handleClick() {
       </div>
 
       <main class="flex mt-12 justify-center ">
-        <ProfileTable :profiles="profiles" />
+        <ProfileTable :league-profiles="profiles" />
       </main>
     </div>
   </div>
