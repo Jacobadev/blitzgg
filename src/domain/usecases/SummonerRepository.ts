@@ -43,9 +43,11 @@ export class BlitzRepository implements Repository {
   }
   getRiotName(riotName: string): RiotName {
     if (!riotName.includes('#')) {
-      throw new Error('riotName must contain #')
+      throw new Error('Summoner must contain tagline E.G. (#NA1)')
     }
-    const [gameName, tagLine] = riotName.split('#')
+    let [gameName, tagLine] = riotName.split('#')
+    tagLine = tagLine.toUpperCase()
     return { gameName, tagLine }
   }
 }
+

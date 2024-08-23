@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@radix-icons/vue": "^1.0.0",
+    "@tanstack/vue-query": "^5.52.0",
     "@vue/typescript-plugin": "^2.0.21",
     "@vueuse/core": "^10.11.1",
     "axios": "^1.7.4",

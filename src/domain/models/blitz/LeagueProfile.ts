@@ -49,6 +49,7 @@ export interface RiotAccount {
   tagLine: string
 }
 
+
 export interface Error {
   code: string
   details: Details
