@@ -15,7 +15,7 @@ onMounted(async () => {
 
 <template>
   <main v-if="!isLoading" class="flex justify-center ">
-    <table class="min-w-max bg-white shadow-lg rounded-lg">
+    <table class="min-w-min bg-white shadow-lg rounded-lg">
       <thead>
         <tr class="bg-gray-800 text-white text-left">
           <th class="py-3 px-6">Campo</th>
@@ -56,18 +56,20 @@ onMounted(async () => {
           <td class="py-3 px-6">
             <ul>
               <li v-for="(rank, index) in profile.latestRanks" :key="index">
-                {{ rank.tier }} {{ rank.rank }} {{ rank.leaguePoints }}LP wins: <span class="text-green-500">{{
+                {{ rank.tier }} {{ rank.rank }} {{ rank.leaguePoints }} LP wins: <span class="text-green-500">{{
                   rank.wins
-                  }}</span> losses:<span class="text-red-500">{{ rank.losses }}</span>
+                }}</span> losses:<span class="text-red-500">{{ rank.losses }}</span>
               </li>
             </ul>
           </td>
         </tr>
-        <tr class="border-b border-gray-200">
-          <td class="py-3 px-6">Ranks</td>
-          <td class="py-3 px-6">
-            <ul>
+        <tr class="  border-b border-gray-200">
+          <td class="flex h-full py-3 px-6">Ranks</td>
+          <td class=" py-3 px-6">
+            <ul class="max-h-[200px] overflow-y-auto grid grid-cols-[repeat(auto-fill,minmax(90px,1fr))]">
               <li v-for="(rank, index) in profile.ranks" :key="index">
+
+                {{ index }}
                 {{ rank.tier }} {{ rank.rank }}
               </li>
             </ul>

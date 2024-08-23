@@ -2,7 +2,6 @@ import { test, expect, beforeEach } from 'vitest'
 import { BlitzRepository } from './SummonerRepository'
 
 let repository: BlitzRepository
-
 beforeEach(() => {
   repository = new BlitzRepository()
 })
